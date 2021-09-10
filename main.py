@@ -85,18 +85,23 @@ dealer_score = 0
 def print_game_info(full: bool = False):
   """Prints current state of the game"""
   dealer_print = dealer_hand if full else dealer_hand[0]
-  print(f"Dealer's first card: {dealer_print} ({dealer_score})")
+  dealer_start_text = "Dealer's cards" if full else "Dealer's first card"
+  print(f"{dealer_start_text}: {dealer_print} ({dealer_score})")
   print(f"Your cards: {player_hand} ({player_score})")
 
 keep_playing = True
 
 def play_again():
   """Asks player if he wants to play again"""
+  global keep_playing
   play = input("Do you wish to play again? 'y' or 'n'\n").lower()
   play = check_yn_input(play)
+  if play == 'n':
+    keep_playing = False
 
 while keep_playing:
-
+  cls()
+  print(logo)
   player_hand.clear()
   dealer_hand.clear()
   player_score = 0
@@ -147,4 +152,18 @@ while keep_playing:
     dealer_score = calculate_score(dealer_hand)
 
   # 4th part: find the winner
-  
+
+  print_game_info(full=True)
+
+  if dealer_score > 21 or player_score > dealer_score:
+    print("Hey! You win, who would have guessed!")
+  elif player_score == dealer_score:
+    print("It's a draw!")
+  else:
+    print("Well, you lost. Deal with it.")
+
+  play_again()
+
+cls()
+print(logo)
+print("Ok, buh-bye!")
