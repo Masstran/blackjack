@@ -34,8 +34,7 @@ def check_yn_input(text: str):
 print(logo)
 start_play = input("You wanna play some blackjack? 'y' or 'n'.\n").lower()
 
-while start_play not in ['y', 'n']:
-  start_play = input("Invalid input! 'y' or 'n' only!\n").lower()
+start_play = check_yn_input(start_play)
 
 if start_play == 'n':
   exit()
@@ -94,7 +93,7 @@ keep_playing = True
 def play_again():
   """Asks player if he wants to play again"""
   play = input("Do you wish to play again? 'y' or 'n'\n").lower()
- 
+  play = check_yn_input(play)
 
 while keep_playing:
 
@@ -120,7 +119,7 @@ while keep_playing:
 
     wanna_draw = input("Do you want to draw an extra card? 'y' or 'n'\n").lower()
     while wanna_draw not in ['y', 'n']:
-      wanna_draw = input("Invalid input! 'y' or 'n' only!\n").lower()
+      wanna_draw = check_yn_input(wanna_draw)
 
     if wanna_draw == 'y':
       new_card = deal_card(player_hand)
@@ -134,3 +133,18 @@ while keep_playing:
   if player_score > 21:
     print_game_info()
     print("I'm sorry, but you lose it all. Bye bye")
+    play_again()
+    continue
+  
+  # 3rd part: get dealer cards
+
+  dealer_score = calculate_score(dealer_hand)
+
+  while dealer_score < 17:
+    print_game_info(full=True)
+    new_card = deal_card(dealer_hand)
+    print(f"Dealer got a new card: {new_card}")
+    dealer_score = calculate_score(dealer_hand)
+
+  # 4th part: find the winner
+  
