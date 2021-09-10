@@ -123,13 +123,14 @@ while keep_playing:
   deal_card(dealer_hand)
   deal_card(dealer_hand)
 
+
   player_score = calculate_score(player_hand)
   dealer_score = calculate_score(dealer_hand)
 
   keep_drawing = True
 
   # 1st part: player draws cards
-  while keep_drawing and player_score <= 21:
+  while keep_drawing and player_score < 21:
     print_game_info()
 
     wanna_draw = input("Type 'y' to draw a card or 'n' to stop. ").lower()
@@ -151,7 +152,7 @@ while keep_playing:
   #   continue
   
   # 3rd part: get dealer cards
-  if player_score <= 21:
+  if player_score <= 21 and not (player_score == 21 and len(player_hand) == 2):
 
     while dealer_score < 17 and dealer_score < player_score:
       # print_game_info(full=True)
@@ -163,8 +164,22 @@ while keep_playing:
 
   print_game_info(full=True)
 
-  if player_score > 21 or (dealer_score <= 21 and dealer_score > player_score):
-    print("Well, you lose. Deal with it.")
+  # Check for a blackjack
+  player_blackjack = player_score == 21 and len(player_hand) == 2
+  dealer_blackjack = dealer_score == 21 and len(dealer_hand) == 2
+
+  if player_blackjack:
+    print("It's a blackjack, duuuude!!!")
+    if dealer_blackjack:
+      print("Still a draw though")
+    else:
+      print("You totally win!!!")
+  elif dealer_blackjack:
+    print("You lose, you've never stood a chance.")
+  elif player_score > 21:
+    print("You went over. What were you thinking?")
+  elif dealer_score <= 21 and dealer_score > player_score:
+    print("Well, you lose. Fair and square.")
   elif player_score == dealer_score:
     print("It's a draw!")
   else:
